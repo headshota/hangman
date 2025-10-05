@@ -7,7 +7,7 @@ fn main() {
 
     let mut secret_word = user_input_trimmed();
 
-    while (secret_word.len() < 1) || !secret_word.chars().all(char::is_alphabetic) {
+    while secret_word.is_empty()  || !secret_word.chars().all(char::is_alphabetic) {
         println!("Secret word can only contain letters and can't be empty");
 
         secret_word = user_input_trimmed();
@@ -71,11 +71,10 @@ fn guess_letter(guess: char, masked_guess_word: &mut String, secret_chars_index:
         None => {
             *guesses -= 1;
         }
-
     }
 }
 
-fn display_guess(masked_guess_word: &String) {
+fn display_guess(masked_guess_word: &str) {
     let formatted_mask: String = masked_guess_word.chars().map(|c| format!("{} ", c)).collect();
     println!("{}", formatted_mask);
 }
