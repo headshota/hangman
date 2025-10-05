@@ -5,22 +5,12 @@ fn main() {
     println!("=== Welcome to hangman! ===");
     println!("Please enter a secret word:");
 
-    let mut secret_word = String::new();
-
-    io::stdin()
-        .read_line(&mut secret_word)
-        .expect("Failed to read line");
-
-    secret_word = secret_word.trim().to_owned();
+    let mut secret_word = user_input_trimmed();
 
     while (secret_word.len() < 1) || !secret_word.chars().all(char::is_alphabetic) {
         println!("Secret word can only contain letters and can't be empty");
 
-        secret_word = String::new();
-        io::stdin()
-            .read_line(&mut secret_word)
-            .expect("Failed to read line");
-        secret_word = secret_word.trim().to_owned();
+        secret_word = user_input_trimmed();
     }
 
     let mut guesses = 6;
@@ -42,20 +32,11 @@ fn main() {
         println!();
         println!("Please guess the letter, {} attempt(s):", guesses);
 
-        let mut guess = String::new();
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-        guess = guess.trim().to_owned();
+        let mut guess = user_input_trimmed();
 
         while (guess.len() != 1) || !guess.chars().next().unwrap().is_alphabetic() {
             println!("Guess can only be 1 letter character!");
-
-            guess = String::new();
-            io::stdin()
-                .read_line(&mut guess)
-                .expect("Failed to read line");
-            guess = guess.trim().to_owned();
+            guess = user_input_trimmed();
         }
 
         let guessed_char = guess.trim().chars().next().unwrap();
@@ -70,6 +51,14 @@ fn main() {
 
     println!("You've ran out of guesses, you are hanged!");
 
+}
+
+fn user_input_trimmed() -> String{
+    let mut user_input = String::new();
+    io::stdin()
+        .read_line(&mut user_input)
+        .expect("Failed to read line");
+    user_input.trim().to_owned()
 }
 
 fn guess_letter(guess: char, masked_guess_word: &mut String, secret_chars_index: &HashMap<char, Vec<usize>>, guesses: &mut i32){
